@@ -1,8 +1,11 @@
-package pro.sky.Homework20.StreamAPI;
+package pro.sky.Homework20.StreamAPI.service;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import pro.sky.Homework20.StreamAPI.Exception.EmployeeAlreadyAddedException;
 import pro.sky.Homework20.StreamAPI.Exception.EmployeeStorageIsFullException;
+import pro.sky.Homework20.StreamAPI.model.Employee;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,9 +15,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     List<Employee> employees = new ArrayList<>();
 
-    public Employee add(String firstName, String lastName, String secondName, int department, int salary) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException {
+    public void checkName(String firstName, String lastName, String secondName) throws BadRequestException {
+        if (!(StringUtils.isAlpha(firstName) && StringUtils.isAlpha(lastName) && StringUtils.isAlpha(secondName))) {
+            throw new BadRequestException();
+        }
+    }
 
+    public Employee add(String firstName, String lastName, String secondName, int department, int salary) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException, BadRequestException {
 
+        checkName(firstName,lastName,secondName);
+        firstName = StringUtils.capitalize(firstName.toLowerCase());
+        lastName = StringUtils.capitalize(lastName.toLowerCase());
+        secondName = StringUtils.capitalize(secondName.toLowerCase());
         Employee employee = new Employee(firstName, lastName, secondName, department, salary);
         if (employees.contains(employee)) {
             throw new EmployeeAlreadyAddedException();
@@ -53,5 +65,4 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .collect(Collectors.groupingBy(Employee::getDepartment));
         return listAllDepartment;
     }
-
 }

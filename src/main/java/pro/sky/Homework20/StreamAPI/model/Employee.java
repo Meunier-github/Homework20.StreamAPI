@@ -1,4 +1,4 @@
-package pro.sky.Homework20.StreamAPI;
+package pro.sky.Homework20.StreamAPI.model;
 
 import java.util.Objects;
 

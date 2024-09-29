@@ -1,9 +1,11 @@
-package pro.sky.Homework20.StreamAPI;
+package pro.sky.Homework20.StreamAPI.controller;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pro.sky.Homework20.StreamAPI.model.Employee;
 
 import java.util.List;
 import java.util.Map;
@@ -12,10 +14,10 @@ import java.util.Map;
 @RequestMapping("/employee")
 
 public class EmployeeController {
-    private final pro.sky.Homework20.StreamAPI.EmployeeService EmployeeService;
+    private final pro.sky.Homework20.StreamAPI.service.EmployeeService EmployeeService;
 
 
-    public EmployeeController(pro.sky.Homework20.StreamAPI.EmployeeService EmployeeService) {
+    public EmployeeController(pro.sky.Homework20.StreamAPI.service.EmployeeService EmployeeService) {
         this.EmployeeService = EmployeeService;
     }
 
@@ -45,7 +47,7 @@ public class EmployeeController {
                         @RequestParam(value = "lastName") String lastName,
                         @RequestParam(value = "secondName") String secondName,
                         @RequestParam(value = "department") Integer department,
-                        @RequestParam(value = "salary") Integer salary) {
+                        @RequestParam(value = "salary") Integer salary) throws BadRequestException {
 
         return EmployeeService.add(firstName, lastName, secondName, department, salary);
 
